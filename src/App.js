@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { Routes, Route, Outlet } from "react-router-dom";
+import Header from "./Header";
+import ProductListing from "./pages/ProductList";
+import ProductDetails from "./pages/ProductDetails";
+import Home from "./pages/Home";
+import ReactGA from "react-ga4";
 
-function App() {
+function AppLayout() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      <Outlet />
     </div>
   );
 }
+
+const App = () => {
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: "/", title: "Home" });
+  }, []);
+  return (
+    <Routes>
+      <Route path="/" element={<AppLayout />}>
+        <Route path="" element={<Home />} />
+        <Route path="/product-listing" element={<ProductListing />} />
+        <Route path="/product-details" element={<ProductDetails />} />
+      </Route>
+    </Routes>
+  );
+};
 
 export default App;
